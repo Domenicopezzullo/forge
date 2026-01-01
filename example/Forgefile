@@ -1,0 +1,15 @@
+exec main
+
+task hello.o : hello.c
+do
+    gcc hello.c -c -o hello.o
+end
+
+task main : hello.o main.c
+do
+    gcc hello.o main.c -o main
+end
+
+task clean do
+    rm -rf hello.o main
+end

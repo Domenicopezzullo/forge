@@ -1,0 +1,6 @@
+task forge : src/forge.nim src/forge/*
+do
+    nimble build -d:release -d:lto
+end
+
+exec forge
