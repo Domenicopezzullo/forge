@@ -26,6 +26,7 @@ jobs:
 
       - name: package-artifact
         run: |
+          ls -R .
           mkdir release
           cp forge release/
           tar czvf forge-${GITHUB_REF_NAME}.tar.gz -C release .
