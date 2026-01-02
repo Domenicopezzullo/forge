@@ -26,7 +26,7 @@ jobs:
 
       - name: Compile
         run: |
-          nim c -d:release --out:forge
+          nimble build -d:release --out:forge
         shell: bash
 
       - name: Prepare artifact
