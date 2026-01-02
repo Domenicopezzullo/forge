@@ -3,6 +3,7 @@ import osproc, times, os, lexer, tables, strutils
 proc needsRebuild*(task: TaskDef, taskMap: Table[string, TaskDef]): bool =
     let targetIsFile = fileExists(task.name)
 
+
     if not targetIsFile and task.dependencies.len == 0:
         return true
 
