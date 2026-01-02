@@ -38,6 +38,7 @@ jobs:
             *)
               tar -czvf out/forge‑${{ matrix.os }}‑${{ github.ref_name }}.tar.gz forge ;;
           esac
+        shell: bash
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
