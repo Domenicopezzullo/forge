@@ -1,0 +1,28 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: install nim
+        run: |
+          sudo apt update
+          sudo apt install nim -y
+          nim --version
+
+      - name: compile
+        run: nim c -d:release src/forge.nim
+
+      - name: release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: forge-${GITHUB_REF_NAME}.tar.gz
+          tag: ${{ github.ref_name }}
