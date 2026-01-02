@@ -1,37 +1,60 @@
-name: release
+name: Release
 
 on:
   push:
-    tags: ["v*"]
+    tags:
+      - "v*"
 
 permissions:
   contents: write
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: install nim
+      - name: Setup Nim
+        uses: jiro4989/setup-nim-action@v2
+        with:
+          nim-version: "stable"
+
+      - name: Compile
         run: |
-          sudo apt update
-          sudo apt install nim -y
-          nim --version
+          nim c -d:release --out:forge
+        shell: bash
 
-      - name: compile
-        run: nim c --out:forge -d:release src/forge.nim
-
-      - name: package-artifact
+      - name: Prepare artifact
         run: |
-          ls -R .
-          mkdir release
-          cp forge release/
-          tar czvf forge-${{ github.ref_name }}.tar.gz -C release .
+          mkdir -p out
+          case "${{ matrix.os }}" in
+            windows‑latest)
+              zip -j out/forge‑${{ matrix.os }}‑${{ github.ref_name }}.zip forge.exe ;;
+            *)
+              tar -czvf out/forge‑${{ matrix.os }}‑${{ github.ref_name }}.tar.gz forge ;;
+          esac
 
-      - name: release
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: forge‑${{ matrix.os }}
+          path: out/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create GitHub Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: forge-${{ github.ref_name }}.tar.gz
           tag: ${{ github.ref_name }}
+          artifacts: |
+            forge‑ubuntu‑latest‑${{ github.ref_name }}.tar.gz
+            forge‑macos‑latest‑${{ github.ref_name }}.tar.gz
+            forge‑windows‑latest‑${{ github.ref_name }}.zip
