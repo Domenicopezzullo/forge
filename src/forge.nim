@@ -1,6 +1,5 @@
 import os, strutils, forge/[lexer, parser, executor], tables
 
-
 let command_params = commandLineParams()
 var forgefile_path = "Forgefile"
 var cmdLineTargets: seq[string] = @[]
