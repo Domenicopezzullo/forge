@@ -22,7 +22,7 @@ jobs:
           nim --version
 
       - name: compile
-        run: nim c -d:release src/forge.nim
+        run: nim c --out:forge -d:release src/forge.nim
 
       - name: package-artifact
         run: |
