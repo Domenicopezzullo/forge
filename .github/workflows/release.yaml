@@ -19,7 +19,6 @@ jobs:
           sudo apt update
           sudo apt install nim -y
           nim --version
-          echo "Ref: $GITHUB_REF, RefName: $GITHUB_REF_NAME"
 
       - name: compile
         run: nim c --out:forge -d:release src/forge.nim
@@ -29,10 +28,10 @@ jobs:
           ls -R .
           mkdir release
           cp forge release/
-          tar czvf forge-${GITHUB_REF_NAME}.tar.gz -C release .
+          tar czvf forge-${{ github.ref_name }}.tar.gz -C release .
 
       - name: release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: forge-${GITHUB_REF_NAME}.tar.gz
+          artifacts: forge-${{ github.ref_name }}.tar.gz
           tag: ${{ github.ref_name }}
