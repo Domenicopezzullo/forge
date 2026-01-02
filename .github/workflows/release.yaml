@@ -40,7 +40,7 @@ jobs:
           esac
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v6
         with:
           name: forge‑${{ matrix.os }}
           path: out/*
