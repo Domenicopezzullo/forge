@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p out
           tar -czvf out/forge-${{ matrix.os }}-${{ github.ref_name }}.tar.gz forge
-          shell: bash
+        shell: bash
   release:
     needs: build
     runs-on: ubuntu-latest
