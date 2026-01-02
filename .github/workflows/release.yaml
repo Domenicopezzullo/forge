@@ -24,6 +24,12 @@ jobs:
       - name: compile
         run: nim c -d:release src/forge.nim
 
+      - name: package-artifact
+        run: |
+          mkdir release
+          cp forge release/
+          tar czvf forge-${GITHUB_REF_NAME}.tar.gz -C release .
+
       - name: release
         uses: ncipollo/release-action@v1
         with:
