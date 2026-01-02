@@ -27,7 +27,7 @@ jobs:
         run: |
           mkdir -p out
           Compress-Archive -Path forge.exe -DestinationPath out/forge-${{ matrix.os }}-${{ github.ref_name }}.zip
-          shell: pwsh
+        shell: pwsh
 
       - name: Prepare artifact (Unix)
         if: matrix.os != 'windows-latest'
